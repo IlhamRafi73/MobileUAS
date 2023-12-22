@@ -23,7 +23,7 @@
         android:id="@+id/bottom_nav_view"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="#606060"
+        android:background="#E9673AB7"
         app:cnb_menuResource="@menu/nav_menu_user"
         app:cnb_radius="20dp"
         app:cnb_unselectedColor="@color/black"
