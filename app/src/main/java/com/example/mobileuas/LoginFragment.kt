@@ -87,10 +87,12 @@ class LoginFragment : Fragment() {
                             .addOnSuccessListener { document ->
                                 if (document != null) {
                                     val role = document.getString("role")
+                                    val userEmail = document.getString("email")
 
                                     with(sharedPreferences.edit()) {
                                         putBoolean("isLoggedIn", true)
                                         putString("userRole", role)
+                                        putString("userEmail", userEmail)
                                         apply()
                                     }
 

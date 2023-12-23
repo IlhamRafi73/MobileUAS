@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mobileuas.adapter.MovieAdapterAdmin
 import com.example.mobileuas.database.Movie
@@ -26,12 +27,17 @@ class MainAdmin : AppCompatActivity() {
 
         binding.MyRecyclerView.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
 
-        movieAdapterAdmin = MovieAdapterAdmin(emptyList()) { movie ->
-            // Handle item click, start EditMovie activity with movie data
-            val intent = Intent(this, EditMovie::class.java)
-            intent.putExtra("movie", movie)
-            startActivity(intent)
-        }
+        movieAdapterAdmin = MovieAdapterAdmin(emptyList(),
+            onItemClick = { movie ->
+                // Handle item click, start EditMovie activity with movie data
+                val intent = Intent(this, EditMovie::class.java)
+                intent.putExtra("movie", movie)
+                startActivity(intent)
+            },
+            onItemLongClick = { movie ->
+                // Handle item long click, delete the movie
+                deleteMovie(movie)
+            })
 
         binding.MyRecyclerView.adapter = movieAdapterAdmin
 
@@ -73,6 +79,21 @@ class MainAdmin : AppCompatActivity() {
                     }
                     movieAdapterAdmin.updateMoviesList(moviesList)
                 }
+            }
+    }
+
+    private fun deleteMovie(movie: Movie) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("movies")
+            .document(movie.id)
+            .delete()
+            .addOnSuccessListener {
+                // Movie deleted successfully
+                Toast.makeText(this, "Movie deleted successfully", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                // Error deleting movie
+                Toast.makeText(this, "Error deleting movie: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }

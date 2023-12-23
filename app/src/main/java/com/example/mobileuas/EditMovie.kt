@@ -19,6 +19,7 @@ class EditMovie : AppCompatActivity() {
     private lateinit var binding: ActivityEditMovieBinding
     private var imageUri: Uri? = null
     private var updateId: String? = null
+    private var existingImageUrl: String? = null
     private lateinit var storageReference: StorageReference
     private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
@@ -40,6 +41,7 @@ class EditMovie : AppCompatActivity() {
         val movie: Movie? = intent.getParcelableExtra("movie")
         if (movie != null) {
             updateId = movie.id
+            existingImageUrl = movie.imageUrl // Store existing image URL
             Glide.with(this)
                 .load(movie.imageUrl)
                 .into(binding.imageView)
@@ -84,7 +86,7 @@ class EditMovie : AppCompatActivity() {
             // If no new image is selected, update the movie with existing details
             val updatedMovie = Movie(
                 id = updateId ?: "",
-                imageUrl = "", // Use the existing image URL
+                imageUrl = existingImageUrl ?: "", // Use the existing image URL
                 title = binding.editTextTitle.text.toString(),
                 producer = binding.editTextProducer.text.toString(),
                 rating = binding.editTextRating.text.toString(),
@@ -117,3 +119,6 @@ class EditMovie : AppCompatActivity() {
         private const val PICK_IMAGE_REQUEST = 1
     }
 }
+
+
+

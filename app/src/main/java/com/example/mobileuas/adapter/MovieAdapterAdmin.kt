@@ -9,7 +9,9 @@ import com.example.mobileuas.EditMovie
 import com.example.mobileuas.database.Movie
 import com.example.mobileuas.databinding.ItemMovieBinding
 
-class MovieAdapterAdmin(private var movies: List<Movie>, private val onItemClick: (Movie) -> Unit) : RecyclerView.Adapter<MovieAdapterAdmin.ViewHolder>() {
+class MovieAdapterAdmin(private var movies: List<Movie>,
+                        private val onItemClick: (Movie) -> Unit,
+                        private val onItemLongClick: (Movie) -> Unit) : RecyclerView.Adapter<MovieAdapterAdmin.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -23,6 +25,12 @@ class MovieAdapterAdmin(private var movies: List<Movie>, private val onItemClick
         // Set click listener
         holder.itemView.setOnClickListener {
             onItemClick(movie)
+        }
+
+        // Set long click listener
+        holder.itemView.setOnLongClickListener {
+            onItemLongClick(movie)
+            true // consume the long click event
         }
     }
 

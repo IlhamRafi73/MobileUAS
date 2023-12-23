@@ -1,6 +1,7 @@
 package com.example.mobileuas
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import com.example.mobileuas.adapter.MovieAdapterPublic
 import com.example.mobileuas.database.Movie
 import com.example.mobileuas.databinding.FragmentUserHomeBinding
 import com.example.mobileuas.databinding.FragmentUserSettingsBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
@@ -31,6 +33,7 @@ class UserHomeFragment : Fragment() {
 
     private lateinit var binding: FragmentUserHomeBinding
     private lateinit var movieAdapterUser: MovieAdapterPublic // Reusing the same adapter as MainAdmin
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +67,8 @@ class UserHomeFragment : Fragment() {
         // Retrieve movies from Firestore
         retrieveMoviesFromFirestore()
 
+        displayUserEmail()
+
         return view
     }
 
@@ -85,6 +90,12 @@ class UserHomeFragment : Fragment() {
                     movieAdapterUser.updateMoviesList(moviesList)
                 }
             }
+    }
+
+    private fun displayUserEmail() {
+        sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", 0)
+        val userEmail = sharedPreferences.getString("userEmail", "")
+        binding.fetchEmail.text = userEmail?.substringBefore('@')
     }
 
     companion object {

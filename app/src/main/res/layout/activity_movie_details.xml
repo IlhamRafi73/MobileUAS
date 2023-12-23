@@ -31,6 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_below="@+id/topSection"
+        android:layout_above="@+id/orderButton"
         android:fillViewport="true">
 
         <RelativeLayout
@@ -150,6 +151,16 @@
 
     </ScrollView>
 
-
+    <Button
+        android:id="@+id/orderButton"
+        android:layout_width="277dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textSize="16sp"
+        android:text="Order"/>
 
 </RelativeLayout>
